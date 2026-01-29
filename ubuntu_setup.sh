@@ -2,14 +2,15 @@
 
 set -e 
 
+log() { echo -e "${GREEN}➜ $1${NC}"; }
+warn() { echo -e "${YELLOW}➜ $1${NC}"; }
+
 RED='\033[0;31m'
 GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-echo -e "${GREEN}================================================${NC}"
-echo -e "${GREEN} Ubuntu Essentials Tools Setup Script${NC}"
-echo -e "${GREEN}================================================${NC}\n"
+echo -e "${GREEN} Ubuntu Fresh Setup – by Zephyr (Muhammad Israr) ${NC}"
 
 # the script must be run as root checking if 
 if [ "$EUID" -ne 0 ]; then 
@@ -46,17 +47,29 @@ echo -e "${GREEN}[5/10] Installing Python, pip, and AI tools...${NC}"
 
 apt install -y python3 python3-pip python3-venv
 
-# Upgrade pip safely
-python3 -m pip install --upgrade pip setuptools wheel
+log "Creating Python AI environment..."
+sudo -u "$ACTUAL_USER" python3 -m venv "$USER_HOME/myenv"
+sudo -u "$ACTUAL_USER" "$USER_HOME/myenv/bin/pip" install --upgrade pip setuptools wheel
 
-# Install Jupyter + AI/DS stack
-python3 -m pip install \
+sudo -u "$ACTUAL_USER" "$USER_HOME/myenv/bin/pip" install \
     jupyterlab \
     notebook \
     numpy \
     pandas \
-    matplotlib \
+    matplotlib 
 
+log "Adding AI shortcuts..."
+
+ALIAS_FILE="$USER_HOME/.bashrc"
+
+if ! grep -q "alias ai=" "$ALIAS_FILE"; then
+cat <<EOF >> "$ALIAS_FILE"
+
+# AI Lab shortcuts
+alias ai='source ~/myenv/bin/activate'
+alias jlab='source ~/myenv/bin/activate && jupyter lab'
+EOF
+fi
 
 
 # Install VS Code
@@ -78,7 +91,10 @@ fi
 echo -e "${GREEN}[7/10] Installing Spotify...${NC}"
 if ! command -v spotify &> /dev/null; then
     curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
+    if [ ! -f /etc/apt/sources.list.d/spotify.list ]; then
     echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list
+fi
+
     apt update
     apt install -y spotify-client
     echo -e "${GREEN}Spotify installed successfully!${NC}"
@@ -100,16 +116,14 @@ apt install -y \
     unzip \
     net-tools \
     gnome-tweaks \
-    gnome-shell-extensions
+    gnome-shell-extensions \
+    vlc \
+
     
 
 
-
-
-
-
 # =================  Set wallpaper ===================  
-echo -e "${GREEN} Setting a wallpaper...${NC}"
+echo -e "${GREEN}[9/10] Setting a wallpaper...${NC}"
 WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
 mkdir -p "$WALLPAPER_DIR"
 chown -R "$ACTUAL_USER:$ACTUAL_USER" "$WALLPAPER_DIR"
@@ -132,9 +146,28 @@ if [ -f "$WALLPAPER_PATH" ]; then
 fi
 
 
+echo -e "${GREEN}[/10] Installing Google Chrome...${NC}"
+
+if ! command -v `google-chrome &> /dev/null; then
+    # Download latest stable Chrome .deb
+    CHROME_DEB="$USER_HOME/Downloads/google-chrome-stable_current_amd64.deb"
+    sudo -u "$ACTUAL_USER" wget -O "$CHROME_DEB" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+
+    # Install Chrome
+    apt install -y "$CHROME_DEB"
+
+    # Clean up
+    rm -f "$CHROME_DEB"
+
+    echo -e "${GREEN}Google Chrome installed successfully!${NC}"
+else
+    echo -e "${YELLOW}Google Chrome is already installed.${NC}"
+fi
+
+
 
 # ======== ====  Clean up ==================
-echo -e "${GREEN}Cleaning up...${NC}"
+echo -e "${GREEN} [11/10] Cleaning up...${NC}"
 apt autoremove -y
 apt clean
 
@@ -142,7 +175,9 @@ apt clean
 echo -e "\n${GREEN}================================================${NC}"
 echo -e "${GREEN}  Installation Complete!${NC}"
 echo -e "${GREEN}================================================${NC}\n"
-echo -e "3. Restart your system to ensure all changes take effect"
+
+echo ""
+echo -e "${YELLOW}Restart your system to apply all changes.${NC}"
 
 
 echo ""
