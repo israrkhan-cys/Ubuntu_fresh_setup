@@ -35,7 +35,10 @@ Inside it:
 🚀 How to use
 1. Clone the repository
 ```
-git clone https://github.com/YOUR_USERNAME/ubuntu_fresh_setup.git
+#first install git 
+sudo apt install git
+
+git clone https://github.com/israrkhan-cys/ubuntu_fresh_setup.git
 cd ubuntu_fresh_setup
 
 3. Make the script executable
