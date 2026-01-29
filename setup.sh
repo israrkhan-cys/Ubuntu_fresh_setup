@@ -117,7 +117,7 @@ apt install -y \
     net-tools \
     gnome-tweaks \
     gnome-shell-extensions \
-    vlc \
+    vlc 
 
     
 
@@ -146,10 +146,10 @@ if [ -f "$WALLPAPER_PATH" ]; then
 fi
 
 
-echo -e "${GREEN}[/10] Installing Google Chrome...${NC}"
+echo -e "${GREEN}[10/10] Installing Google Chrome...${NC}"
 
-if ! command -v `google-chrome &> /dev/null; then
-    # Download latest stable Chrome .deb
+if ! command -v google-chrome &> /dev/null; then
+
     CHROME_DEB="$USER_HOME/Downloads/google-chrome-stable_current_amd64.deb"
     sudo -u "$ACTUAL_USER" wget -O "$CHROME_DEB" https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
 
