@@ -1,11 +1,11 @@
-## 🐧 Ubuntu Fresh Setup
+# 🐧 Ubuntu Fresh Setup
 Developer Edition — by Zephyr
 
 A one-command setup script for CS students and beginners that turns a fresh Ubuntu install into a developer-ready, AI-lab-ready, beautiful workstation.
 
 This script installs essential tools, configures a Python AI environment, sets up databases, adds productivity apps, and gives your desktop a fresh look — all automatically.
 
-# What this script does
+## What this script does
 
 After running, your system will have:
 
@@ -70,13 +70,13 @@ sudo chmod +x setup.sh
 sudo ./setup.sh
 ```
 
-⚠️ Notes
+## ⚠️ Notes
 
 Designed for Ubuntu 20.04+
 Run only on fresh or clean systems
 Tested inside VirtualBox
 
-# 🤝 Contributing
+## 🤝 Contributing
 
 Pull requests are welcome.
 Feel free to add tools, themes, or improvements.
