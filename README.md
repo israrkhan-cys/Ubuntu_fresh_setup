@@ -11,51 +11,26 @@ After running, your system will have:
 
 🔧 Development Tools
 
-GCC, G++, Make (build-essential)
+- GCC, G++, Make (build-essential)
+- GDB (debugger)
+- Git
+- Python 3 + pip + venv
+- Visual Studio Code
 
-GDB (debugger)
-
-Git
-
-Python 3 + pip + venv
-
-Visual Studio Code
-
-🧠 AI / Data Science Lab
-
-A pre-created virtual environment: ~/myenv
-
+### A pre-created virtual environment: ~/myenv
 Inside it:
-
-Jupyter Lab
-
-Jupyter Notebook
-
-NumPy, Pandas, Matplotlib
+- Jupyter Lab
+- Jupyter Notebook
+- NumPy, Pandas, Matplotlib
 
 🌐 Productivity & Daily Apps
-
-Google Chrome
-
-Spotify
-
-VLC
-
-Curl, Wget, Htop, Tree
-
-Vim, Nano
-
-Zip / Unzip
-
-Net-tools
-
-🎨 Desktop & Terminal Makeover
-
-Dark theme
-
-Papirus icons
-
-GNOME Tweaks + Extensions
+- Google Chrome
+- Spotify
+- VLC
+- Curl, Wget, Htop, Tree
+- Vim, Nano
+- Zip / Unzip
+- Net-tools
 
 🚀 How to use
 1. Clone the repository
