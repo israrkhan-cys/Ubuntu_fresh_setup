@@ -26,24 +26,40 @@ echo -e "${YELLOW}Installing for user: $ACTUAL_USER${NC}"
 echo -e "${YELLOW}Home directory: $USER_HOME${NC}\n"
 
 # Update system
-echo -e "${GREEN}[1/10] Updating system packages...${NC}"
+echo -e "${GREEN}[1/11] Updating system packages...${NC}"
 apt update && apt upgrade -y
 
 # Install essential build tools and compilers
-echo -e "${GREEN}[2/10] Installing build-essential (GCC, G++, Make)...${NC}"
+echo -e "${GREEN}[2/11] Installing build-essential (GCC, G++, Make)...${NC}"
 apt install -y build-essential
 
 # Install GDB (debugger)
-echo -e "${GREEN}[3/10] Installing GDB debugger...${NC}"
+echo -e "${GREEN}[3/11] Installing GDB debugger...${NC}"
 apt install -y gdb
 
-# Install Git
-echo -e "${GREEN}[4/10] Installing Git...${NC}"
-apt install -y git
+
+# Install other useful tools
+echo -e "${GREEN}[8/10] Installing additional useful tools...${NC}"
+apt install -y \
+    curl \
+    wget \
+    vim \
+    nano \
+    htop \
+    tree \
+    zip \
+    unzip \
+    net-tools \
+    gnome-tweaks \
+    gnome-shell-extensions \
+    vlc \
+    sqlite3 \
+    sqlitebrowser
+
 
 
 # Install Python and pip
-echo -e "${GREEN}[5/10] Installing Python, pip, and AI tools...${NC}"
+echo -e "${GREEN}[5/11] Installing Python, pip, and AI tools...${NC}"
 
 apt install -y python3 python3-pip python3-venv
 
@@ -73,7 +89,7 @@ fi
 
 
 # Install VS Code
-echo -e "${GREEN}[6/10] Installing Visual Studio Code...${NC}"
+echo -e "${GREEN}[6/11] Installing Visual Studio Code...${NC}"
 if ! command -v code &> /dev/null; then
     wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
     install -D -o root -g root -m 644 packages.microsoft.gpg /etc/apt/keyrings/packages.microsoft.gpg
@@ -87,43 +103,26 @@ else
 fi
 
 
-# Install Spotify
-echo -e "${GREEN}[7/10] Installing Spotify...${NC}"
+# Install Spotify via Snap
+echo -e "${GREEN}[7/10] Installing Spotify (Snap)...${NC}"
 if ! command -v spotify &> /dev/null; then
-    curl -sS https://download.spotify.com/debian/pubkey_6224F9941A8AA6D1.gpg | gpg --dearmor --yes -o /etc/apt/trusted.gpg.d/spotify.gpg
-    if [ ! -f /etc/apt/sources.list.d/spotify.list ]; then
-    echo "deb http://repository.spotify.com stable non-free" > /etc/apt/sources.list.d/spotify.list
-fi
+    apt install -y snapd
 
-    apt update
-    apt install -y spotify-client
-    echo -e "${GREEN}Spotify installed successfully!${NC}"
+    systemctl enable --now snapd.socket
+    ln -sf /var/lib/snapd/snap /snap
+
+    snap install spotify
+
+    echo -e "${GREEN}Spotify installed via Snap!${NC}"
 else
     echo -e "${YELLOW}Spotify is already installed.${NC}"
 fi
 
 
-# Install other useful tools
-echo -e "${GREEN}[8/10] Installing additional useful tools...${NC}"
-apt install -y \
-    curl \
-    wget \
-    vim \
-    nano \
-    htop \
-    tree \
-    zip \
-    unzip \
-    net-tools \
-    gnome-tweaks \
-    gnome-shell-extensions \
-    vlc 
-
-    
 
 
 # =================  Set wallpaper ===================  
-echo -e "${GREEN}[9/10] Setting a wallpaper...${NC}"
+echo -e "${GREEN}[9/11] Setting a wallpaper...${NC}"
 WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
 mkdir -p "$WALLPAPER_DIR"
 chown -R "$ACTUAL_USER:$ACTUAL_USER" "$WALLPAPER_DIR"
@@ -146,7 +145,7 @@ if [ -f "$WALLPAPER_PATH" ]; then
 fi
 
 
-echo -e "${GREEN}[10/10] Installing Google Chrome...${NC}"
+echo -e "${GREEN}[10/11] Installing Google Chrome...${NC}"
 
 if ! command -v google-chrome &> /dev/null; then
 
@@ -167,7 +166,7 @@ fi
 
 
 # ======== ====  Clean up ==================
-echo -e "${GREEN} [11/10] Cleaning up...${NC}"
+echo -e "${GREEN} [11/11] Cleaning up...${NC}"
 apt autoremove -y
 apt clean
 
