@@ -1,5 +1,6 @@
 #!/bin/bash
 
+
 set -e 
 
 log() { echo -e "${GREEN}➜ $1${NC}"; }
@@ -17,6 +18,10 @@ if [ "$EUID" -ne 0 ]; then
     echo -e "${RED}Please run as root (use sudo)${NC}"
     exit 1
 fi
+
+apt install figlet -y
+figlet "Ubuntu Setup"
+
 
 # Get the actual user (not root)
 ACTUAL_USER=${SUDO_USER:-$USER}
