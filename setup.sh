@@ -1,6 +1,5 @@
 #!/bin/bash
 
-
 set -e 
 
 log() { echo -e "${GREEN}➜ $1${NC}"; }
@@ -11,9 +10,9 @@ GREEN='\033[0;32m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
-echo -e "${GREEN} Ubuntu Fresh Setup – by Zephyr (Muhammad Israr) ${NC}"
+echo -e "${GREEN} Ubuntu Fresh Setup – by zephyr (Muhammad Israr) ${NC}"
 
-# the script must be run as root checking if 
+# the script must be run as root checking if w
 if [ "$EUID" -ne 0 ]; then 
     echo -e "${RED}Please run as root (use sudo)${NC}"
     exit 1
@@ -50,6 +49,7 @@ apt install -y \
     wget \
     vim \
     nano \
+    btop \
     htop \
     tree \
     zip \
@@ -121,32 +121,6 @@ if ! command -v spotify &> /dev/null; then
     echo -e "${GREEN}Spotify installed via Snap!${NC}"
 else
     echo -e "${YELLOW}Spotify is already installed.${NC}"
-fi
-
-
-
-
-# =================  Set wallpaper ===================  
-echo -e "${GREEN}[9/11] Setting a wallpaper...${NC}"
-WALLPAPER_DIR="$USER_HOME/Pictures/Wallpapers"
-mkdir -p "$WALLPAPER_DIR"
-chown -R "$ACTUAL_USER:$ACTUAL_USER" "$WALLPAPER_DIR"
-
-# Download a nice programming-themed wallpaper
-WALLPAPER_URL="https://images.unsplash.com/photo-1542831371-29b0f74f9713"
-WALLPAPER_PATH="$WALLPAPER_DIR/code_wallpaper.jpg"
-
-sudo -u "$ACTUAL_USER" wget -O "$WALLPAPER_PATH" "$WALLPAPER_URL?w=1920&h=1080&fit=crop" 2>/dev/null || {
-    echo -e "${YELLOW}Could not download wallpaper. Skipping...${NC}"
-}
-
-if [ -f "$WALLPAPER_PATH" ]; then
-    # Set wallpaper for GNOME
-    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $ACTUAL_USER)/bus" \
-        gsettings set org.gnome.desktop.background picture-uri "file://$WALLPAPER_PATH"
-    sudo -u "$ACTUAL_USER" DBUS_SESSION_BUS_ADDRESS="unix:path=/run/user/$(id -u $ACTUAL_USER)/bus" \
-        gsettings set org.gnome.desktop.background picture-uri-dark "file://$WALLPAPER_PATH"
-    echo -e "${GREEN}Wallpaper set successfully!${NC}"
 fi
 
 
